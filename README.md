@@ -1,36 +1,68 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Cursor 邮箱管理系统
 
-## Getting Started
+一个轻量级的邮箱管理系统，使用 JSON 文件存储数据。
 
-First, run the development server:
+## 功能特性
+
+- **批量添加邮箱**：支持一次添加多个邮箱，自动去重
+- **使用次数限制**：每个邮箱最多使用3次
+- **使用记录**：记录每次使用者的名字和时间
+- **点击复制**：点击邮箱地址即可复制
+- **接码功能**：自动获取 Cursor 验证码
+
+## 技术栈
+
+- **框架**：Next.js 16 (App Router)
+- **数据存储**：JSON 文件（无需数据库）
+- **UI**：Tailwind CSS + shadcn/ui 风格组件
+
+## 快速开始
 
 ```bash
+cd cursor-manager
+
+# 安装依赖
+npm install
+
+# 启动开发服务器
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+访问 http://localhost:3000（或显示的端口）
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 数据存储
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+数据保存在 `data/emails.json` 文件中，格式如下：
 
-## Learn More
+```json
+{
+  "emails": [
+    {
+      "id": "uuid",
+      "email": "example@outlook.com",
+      "usedCount": 0,
+      "maxUses": 3,
+      "createdAt": "2026-01-31T10:00:00.000Z",
+      "updatedAt": "2026-01-31T10:00:00.000Z",
+      "usages": [
+        {
+          "id": "uuid",
+          "userName": "张三",
+          "usedAt": "2026-01-31T10:00:00.000Z",
+          "verifyCode": "123456"
+        }
+      ]
+    }
+  ]
+}
+```
 
-To learn more about Next.js, take a look at the following resources:
+## API 接口
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+| 方法 | 路径 | 说明 |
+|------|------|------|
+| GET | /api/emails | 获取所有邮箱 |
+| POST | /api/emails | 批量添加邮箱 |
+| DELETE | /api/emails/[id] | 删除邮箱 |
+| POST | /api/emails/[id]/use | 记录使用 |
+| GET | /api/verify-code?email=xxx | 获取验证码 |

@@ -1,0 +1,21 @@
+{
+  "emails": [
+    {
+      "id": "97e64b74-acf6-4358-8201-754cd26017f8",
+      "email": "harrislori6844@outlook.com",
+      "usedCount": 1,
+      "maxUses": 3,
+      "createdAt": "2026-01-31T10:04:38.546Z",
+      "updatedAt": "2026-01-31T10:40:44.264Z",
+      "usages": [
+        {
+          "id": "d889d35c-4c30-4c0f-89d7-b5e83def46e3",
+          "userName": "秋明",
+          "usedAt": "2026-01-29T18:05:00.000Z",
+          "verifyCode": "595315",
+          "tag": "拼车无质保"
+        }
+      ]
+    }
+  ]
+}
