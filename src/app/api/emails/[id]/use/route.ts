@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { recordUsage } from '@/lib/db';
+import { recordUsage, UsageTag } from '@/lib/db';
 
 // 记录邮箱使用
 export async function POST(
@@ -8,13 +8,13 @@ export async function POST(
 ) {
   try {
     const { id } = await params;
-    const { userName, verifyCode } = await request.json();
+    const { userName, verifyCode, tag } = await request.json();
 
     if (!userName || !userName.trim()) {
       return NextResponse.json({ error: '请输入使用者名字' }, { status: 400 });
     }
 
-    const result = recordUsage(id, userName, verifyCode || null);
+    const result = recordUsage(id, userName, verifyCode || null, tag as UsageTag);
 
     if (!result.success) {
       return NextResponse.json({ error: result.error }, { status: 400 });

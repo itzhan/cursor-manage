@@ -119,7 +119,8 @@ export function deleteEmail(id: string): boolean {
 export function recordUsage(
   id: string, 
   userName: string, 
-  verifyCode: string | null
+  verifyCode: string | null,
+  tag: UsageTag = '拼车无质保'
 ): { success: boolean; error?: string } {
   const db = readDB();
   const email = db.emails.find(e => e.id === id);
@@ -131,13 +132,20 @@ export function recordUsage(
   if (email.usedCount >= email.maxUses) {
     return { success: false, error: '该邮箱已达到最大使用次数' };
   }
+
+  // 根据标签类型设置 maxUses
+  if (tag.includes('独享')) {
+    email.maxUses = 1;
+  } else {
+    email.maxUses = 3;
+  }
   
   email.usages.push({
     id: uuidv4(),
     userName: userName.trim(),
     usedAt: new Date().toISOString(),
     verifyCode,
-    tag: '拼车无质保',
+    tag,
   });
   email.usedCount++;
   email.updatedAt = new Date().toISOString();

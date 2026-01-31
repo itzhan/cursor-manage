@@ -73,6 +73,7 @@ export default function Home() {
   const [selectedEmail, setSelectedEmail] = useState<Email | null>(null);
   const [userName, setUserName] = useState("");
   const [recording, setRecording] = useState(false);
+  const [recordTag, setRecordTag] = useState<UsageTag>("拼车无质保");
 
   // 使用记录管理状态
   const [usageDialogOpen, setUsageDialogOpen] = useState(false);
@@ -207,6 +208,7 @@ export default function Home() {
     setVerifyError(null);
     setVerifyEmailTime(null);
     setUserName("");
+    setRecordTag("拼车无质保");
     setUseDialogOpen(true);
 
     try {
@@ -268,6 +270,7 @@ export default function Home() {
         body: JSON.stringify({
           userName: userName.trim(),
           verifyCode: verifyCode || null,
+          tag: recordTag,
         }),
       });
       const data = await res.json();
@@ -763,6 +766,34 @@ example3@outlook.com"
                 value={userName}
                 onChange={(e) => setUserName(e.target.value)}
               />
+            </div>
+
+            {/* 类型标签 */}
+            <div className="space-y-2">
+              <label className="text-sm font-medium">类型</label>
+              <div className="grid grid-cols-2 gap-2">
+                {tagOptions.map((tag) => (
+                  <Button
+                    key={tag}
+                    type="button"
+                    variant={recordTag === tag ? "default" : "outline"}
+                    size="sm"
+                    onClick={() => setRecordTag(tag)}
+                    className={`text-xs ${
+                      recordTag === tag
+                        ? tag.includes('有质保')
+                          ? 'bg-green-600 hover:bg-green-700'
+                          : 'bg-red-600 hover:bg-red-700'
+                        : ''
+                    }`}
+                  >
+                    {tag}
+                  </Button>
+                ))}
+              </div>
+              {recordTag.includes('独享') && (
+                <p className="text-xs text-amber-600">选择独享后，该邮箱将变为 1/1</p>
+              )}
             </div>
           </div>
           <DialogFooter>
