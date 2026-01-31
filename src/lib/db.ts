@@ -137,6 +137,7 @@ export function recordUsage(
     userName: userName.trim(),
     usedAt: new Date().toISOString(),
     verifyCode,
+    tag: '拼车无质保',
   });
   email.usedCount++;
   email.updatedAt = new Date().toISOString();
